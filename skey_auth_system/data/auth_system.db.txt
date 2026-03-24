@@ -1,0 +1,48 @@
+# auth_system.db（二进制 SQLite 文件）占位说明
+
+由于当前提交环境不便上传二进制文件，本项目改为提交文本占位文件。
+
+## 使用方法
+1. 直接运行服务端：
+   python server/server_main.py
+2. 服务端启动时会自动在 `data/auth_system.db` 创建数据库并建表。
+
+因此一般不需要手工把本文件转回二进制。
+
+## 若需要手工初始化
+可参考下述 SQL（与服务端 models.py 一致）：
+
+CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL UNIQUE,
+    seed TEXT NOT NULL,
+    chain_length INTEGER NOT NULL,
+    current_index INTEGER NOT NULL,
+    current_hash TEXT NOT NULL,
+    hash_algo TEXT NOT NULL DEFAULT 'sha256',
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'active'
+);
+
+CREATE TABLE IF NOT EXISTS captcha_records (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL,
+    captcha_id TEXT NOT NULL UNIQUE,
+    captcha_code TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    expires_at TEXT NOT NULL,
+    used INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS login_logs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT,
+    client_ip TEXT,
+    action TEXT NOT NULL,
+    result TEXT NOT NULL,
+    reason TEXT,
+    seq_no INTEGER,
+    detail TEXT,
+    created_at TEXT NOT NULL
+);

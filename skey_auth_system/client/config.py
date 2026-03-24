@@ -1,0 +1,5 @@
+"""Client configuration."""
+
+DEFAULT_HOST = "127.0.0.1"
+DEFAULT_PORT = 9000
+DEFAULT_CHAIN_LENGTH = 100
